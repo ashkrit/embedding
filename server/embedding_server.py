@@ -3,14 +3,26 @@ from sentence_transformers import SentenceTransformer
 from flask import request
 import logging
 import requests
+import json
 
 app = Flask(__name__)
 
 logging.basicConfig(level=logging.INFO)
 
-
-
 model:SentenceTransformer = SentenceTransformer('all-MiniLM-L6-v2')
+
+def embedidngs_st(text:str) -> list[float]:
+    embedding = model.encode(sentences=text)
+    return embedding.tolist()
+
+## Hashmap to store model name and function
+
+
+model_repository={}
+
+model_repository["all-MiniLM-L6-v2"] = embedidngs_st
+
+
 
 
 @app.route('/')
@@ -19,14 +31,19 @@ def welcome():
 
 @app.route('/embedding', methods=['POST'])
 def embedding():
-    sentence = request.json['text']
-    model_name = request.json['model']
+    
+    ## get request payload as JSON
+    payload = request.json
 
-    if model_name == 'all-MiniLM-L6-v2':
-        embedding = model.encode(sentence)
-        return {'embedding': embedding.tolist()}
-    else:
-        return {'error': 'Model not found'}
+    logging.info(f'Received payload: {payload}')
+
+    sentence:str = payload.get("text")
+    model_name:str = payload.get("model")
+
+
+    model = model_repository[model_name]
+    vector = model(sentence)
+    return {'embedding': vector}
 
 
 if __name__ == '__main__':
