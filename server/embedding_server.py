@@ -4,6 +4,7 @@ from flask import request
 import logging
 import requests
 import json
+from groq import Groq
 
 app = Flask(__name__)
 
@@ -11,6 +12,9 @@ logging.basicConfig(level=logging.INFO)
 
 OLLAMA_API_EMBEDDINGS = "http://localhost:11434/api/embeddings"
 model:SentenceTransformer = SentenceTransformer('all-MiniLM-L6-v2')
+
+client = Groq()
+
 
 def embedidngs_st(text:str,model_name:str) -> list[float]:
     embedding = model.encode(sentences=text)
@@ -33,6 +37,8 @@ def embedidngs_ollama(text:str,model_name:str) -> list[float]:
 model_repository={}
 model_repository["st/all-MiniLM-L6-v2"] = embedidngs_st
 model_repository["ollama/all-minilm"] = embedidngs_ollama
+model_repository["ollama/gemma:2b"] = embedidngs_ollama
+model_repository["ollama/nomic-embed-text"] = embedidngs_ollama
 
 
 
