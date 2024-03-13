@@ -1,6 +1,8 @@
 package org.genai;
 
 
+import org.genai.api.Embedding;
+import org.genai.api.Embedding.EmbeddingReply;
 import org.genai.api.EmbeddingService;
 import org.genai.api.ModelInfo;
 import org.genai.api.TypeAdapter;
@@ -24,5 +26,11 @@ public class App {
         ModelInfo i = x.execute().body();
         i.models.forEach(System.out::println);
         System.out.println(i.models);
+
+        Embedding text = new Embedding("google", "embedding-001", "How are you");
+        Call<EmbeddingReply> y = service.embedding(text);
+        EmbeddingReply reply = y.execute().body();
+
+        System.out.println(reply.len);
     }
 }

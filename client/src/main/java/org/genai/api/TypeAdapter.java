@@ -2,7 +2,10 @@ package org.genai.api;
 
 import com.google.gson.Gson;
 import com.sun.istack.internal.Nullable;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 
@@ -15,16 +18,25 @@ public class TypeAdapter {
             new Converter.Factory() {
                 @Override
                 public @Nullable Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
-
-                    if (type == ModelInfo.class) {
-                        return (r) -> {
-                            Gson g = new Gson();
-                            return g.fromJson(r.string(), ModelInfo.class);
-                        };
-
-                    }
-                    return null;
+                    return (r) -> {
+                        Gson g = new Gson();
+                        return g.fromJson(r.string(), type);
+                    };
                 }
+
+
+                @Nullable
+                public Converter<?, RequestBody> requestBodyConverter(Type type, Annotation[] parameterAnnotations, Annotation[] methodAnnotations,
+                                                                      Retrofit retrofit) {
+
+
+                    return (r) -> {
+                        Gson g = new Gson();
+                        return RequestBody.create(MediaType.parse("application/json"), g.toJson(r));
+                    };
+                }
+
+
             };
 
 }
