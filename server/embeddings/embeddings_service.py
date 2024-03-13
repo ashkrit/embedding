@@ -58,8 +58,6 @@ def embedidngs_googleai(text: str, model_name: str) -> list[float]:
     }
     endpoint = application_settings["googleai_api"]
     with_api_key = f"{endpoint}?key={api_key}"
-    logging.info(with_api_key)
-    logging.info(payload)
     reply = requests.post(with_api_key, json=payload, headers=headers)
     reply_json = reply.json()
     first_item = reply_json['embedding']
