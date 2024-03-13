@@ -22,6 +22,7 @@ public class App {
         Call<ModelInfo> x = service.listModels();
 
         ModelInfo i = x.execute().body();
+        i.models.forEach(System.out::println);
         System.out.println(i.models);
     }
 }

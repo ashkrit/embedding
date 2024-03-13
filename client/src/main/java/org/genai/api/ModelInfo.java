@@ -12,7 +12,6 @@ public class ModelInfo {
     }
 
 
-
     public static class Model {
         public final String name;
         public final String provider;
@@ -20,6 +19,12 @@ public class ModelInfo {
         public Model(String name, String provider) {
             this.name = name;
             this.provider = provider;
+        }
+
+        @Override
+        public String toString() {
+            return name + " (" + provider + ")";
+
         }
     }
 
