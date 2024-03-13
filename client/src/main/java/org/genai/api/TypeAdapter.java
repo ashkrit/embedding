@@ -30,7 +30,7 @@ public class TypeAdapter {
 
                     return (r) -> {
                         Gson g = new Gson();
-                        return RequestBody.create(MediaType.parse("application/json"), g.toJson(r));
+                        return RequestBody.create(g.toJson(r).getBytes());
                     };
                 }
 
