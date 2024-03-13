@@ -3,14 +3,13 @@ from sentence_transformers import SentenceTransformer
 from flask import request
 import logging
 import embeddings.embeddings_service as es
-from typing import Dict, Callable
+from typing import Callable,Dict
 
 
 
 app = Flask(__name__)
 
 logging.basicConfig(level=logging.INFO)
-
 
 # Map to store model name and function
 
@@ -59,4 +58,4 @@ def embedding():
 if __name__ == '__main__':
     logging.info('Starting embedding server')
     logging.info('Loading model')
-    app.run(debug=True)
+    app.run(debug=True , port=9090)
