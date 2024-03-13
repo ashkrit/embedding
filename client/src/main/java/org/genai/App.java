@@ -10,6 +10,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class App {
@@ -49,6 +50,6 @@ public class App {
 
         GoogleEmbedding.GoogleEmbeddingReply er1 = googleAiService.embedding(q, embedding).execute().body();
 
-        System.out.println(er1);
+        System.out.println(Arrays.toString(er1.embedding.values));
     }
 }
