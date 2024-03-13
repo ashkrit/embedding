@@ -1,0 +1,19 @@
+target/
+
+
+### IntelliJ IDEA ###
+client/.idea
+*.iws
+*.iml
+*.ipr
+
+### Eclipse ###
+
+### NetBeans ###
+
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store
