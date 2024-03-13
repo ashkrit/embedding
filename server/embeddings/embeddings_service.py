@@ -19,7 +19,7 @@ def embedidngs_ollama(text: str, model_name: str) -> list[float]:
         "prompt": text
     }
     endpoint = application_settings["ollama_api"]
-    
+
     reply = requests.post(endpoint, json=payload)
     reply_json = reply.json()
     vectors = reply_json['embedding']
@@ -42,4 +42,26 @@ def embedidngs_openai(text: str, model_name: str) -> list[float]:
     reply_json = reply.json()
     first_item = reply_json['data'][0]
     vector = first_item['embedding']
+    return vector
+
+
+def embedidngs_googleai(text: str, model_name: str) -> list[float]:
+    payload = {
+        "model": f"models/{model_name}",
+        "content": {
+            "parts": [{"text": text}]
+        }
+    }
+    api_key = os.getenv("gemma_key")
+    headers = {
+        'Content-Type': 'application/json',
+    }
+    endpoint = application_settings["googleai_api"]
+    with_api_key = f"{endpoint}?key={api_key}"
+    logging.info(with_api_key)
+    logging.info(payload)
+    reply = requests.post(with_api_key, json=payload, headers=headers)
+    reply_json = reply.json()
+    first_item = reply_json['embedding']
+    vector = first_item['values']
     return vector

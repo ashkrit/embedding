@@ -21,6 +21,7 @@ model_repository["ollama/all-minilm"] = es.embedidngs_ollama
 model_repository["ollama/gemma:2b"] = es.embedidngs_ollama
 model_repository["ollama/nomic-embed-text"] = es.embedidngs_ollama
 model_repository["openai/text-embedding-3-small"] = es.embedidngs_openai
+model_repository["google/embedding-001"] = es.embedidngs_googleai
 
 
 @app.route('/')
