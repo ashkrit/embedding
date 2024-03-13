@@ -5,8 +5,6 @@ import requests
 import os
 
 
-OLLAMA_API_EMBEDDINGS:str = application_settings["ollama_api"]
-OPENAI_API_EMBEDDINGS:str =application_settings["openai_api"]
 model: SentenceTransformer = SentenceTransformer('all-MiniLM-L6-v2')
 
 
@@ -20,9 +18,12 @@ def embedidngs_ollama(text: str, model_name: str) -> list[float]:
         "model": model_name,
         "prompt": text
     }
-    reply = requests.post(OLLAMA_API_EMBEDDINGS, json=payload)
+    endpoint = application_settings["ollama_api"]
+    
+    reply = requests.post(endpoint, json=payload)
     reply_json = reply.json()
     vectors = reply_json['embedding']
+
     return vectors
 
 
@@ -36,7 +37,8 @@ def embedidngs_openai(text: str, model_name: str) -> list[float]:
         'Authorization': f'Bearer {api_key}',
         'Content-Type': 'application/json',
     }
-    reply = requests.post(OPENAI_API_EMBEDDINGS, json=payload, headers=headers)
+    endpoint = application_settings["openai_api"]
+    reply = requests.post(endpoint, json=payload, headers=headers)
     reply_json = reply.json()
     first_item = reply_json['data'][0]
     vector = first_item['embedding']
