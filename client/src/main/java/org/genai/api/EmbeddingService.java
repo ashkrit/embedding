@@ -1,6 +1,8 @@
 package org.genai.api;
 
-import org.genai.api.Embedding.EmbeddingReply;
+import org.genai.protocol.Embedding;
+import org.genai.protocol.Embedding.EmbeddingReply;
+import org.genai.protocol.ModelInfo;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

@@ -1,4 +1,4 @@
-package org.genai.api;
+package org.genai.protocol;
 
 public class Embedding {
     public final String provider;

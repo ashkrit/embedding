@@ -1,4 +1,4 @@
-package org.genai.api;
+package org.genai.protocol;
 
 import java.util.List;
 

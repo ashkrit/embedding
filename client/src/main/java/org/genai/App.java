@@ -1,15 +1,16 @@
 package org.genai;
 
 
-import org.genai.api.Embedding;
-import org.genai.api.Embedding.EmbeddingReply;
-import org.genai.api.EmbeddingService;
-import org.genai.api.ModelInfo;
-import org.genai.api.TypeAdapter;
+import org.genai.api.*;
+import org.genai.protocol.Embedding;
+import org.genai.protocol.Embedding.EmbeddingReply;
+import org.genai.protocol.GoogleEmbedding;
+import org.genai.protocol.ModelInfo;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 
 import java.io.IOException;
+import java.util.Collections;
 
 public class App {
     public static void main(String[] args) throws IOException {
@@ -32,5 +33,22 @@ public class App {
         EmbeddingReply reply = y.execute().body();
 
         System.out.println(reply.len);
+
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://generativelanguage.googleapis.com/")
+                .addConverterFactory(TypeAdapter.FACTORY)
+                .build();
+        GoogleAIService googleAiService = retrofit.create(GoogleAIService.class);
+
+        String q = System.getenv("gemma_key");
+
+        GoogleEmbedding.ModelPart part = new GoogleEmbedding.ModelPart("how are you");
+        GoogleEmbedding.ModelContent content = new GoogleEmbedding.ModelContent(Collections.singletonList(part));
+        GoogleEmbedding embedding = new GoogleEmbedding("models/embedding-001", content);
+
+        GoogleEmbedding.GoogleEmbeddingReply er1 = googleAiService.embedding(q, embedding).execute().body();
+
+        System.out.println(er1);
     }
 }
