@@ -3,18 +3,20 @@ from sentence_transformers import SentenceTransformer
 from flask import request
 import logging
 import embeddings.embeddings_service as es
+from typing import Dict, Callable
+
+
 
 app = Flask(__name__)
 
 logging.basicConfig(level=logging.INFO)
 
 
+# Map to store model name and function
 
 
-# Hashmap to store model name and function
+model_repository:Dict[str,Callable[[str,str],list[float]]] = {}
 
-
-model_repository = {}
 model_repository["st/all-MiniLM-L6-v2"] = es.embedidngs_st
 model_repository["ollama/all-minilm"] = es.embedidngs_ollama
 model_repository["ollama/gemma:2b"] = es.embedidngs_ollama
