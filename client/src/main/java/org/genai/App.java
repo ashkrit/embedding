@@ -6,6 +6,8 @@ import org.genai.protocol.Embedding;
 import org.genai.protocol.Embedding.EmbeddingReply;
 import org.genai.protocol.GoogleEmbedding;
 import org.genai.protocol.GoogleEmbedding.GoogleEmbeddingReply;
+import org.genai.protocol.GoogleEmbedding.ModelContent;
+import org.genai.protocol.GoogleEmbedding.ModelPart;
 import org.genai.protocol.ModelInfo;
 import org.genai.protocol.OpenAIEmbedding;
 import org.genai.protocol.OpenAIEmbedding.OpenAIEmbeddingReply;
@@ -52,10 +54,10 @@ public class App {
                 .addConverterFactory(TypeAdapter.FACTORY)
                 .build();
 
-        OpenAIService openAIService = retrofit.create(OpenAIService.class);
+        OpenAIService service = retrofit.create(OpenAIService.class);
         String q = System.getenv("gpt_key");
         OpenAIEmbedding openAIEmbedding = new OpenAIEmbedding("text-embedding-3-small", "How are you");
-        Response<OpenAIEmbeddingReply> execute = openAIService.embedding("Bearer " + q, openAIEmbedding).execute();
+        Response<OpenAIEmbeddingReply> execute = service.embedding("Bearer " + q, openAIEmbedding).execute();
 
         OpenAIEmbeddingReply er1 = execute.body();
 
@@ -67,15 +69,15 @@ public class App {
                 .baseUrl("https://generativelanguage.googleapis.com/")
                 .addConverterFactory(TypeAdapter.FACTORY)
                 .build();
-        GoogleAIService googleAiService = retrofit.create(GoogleAIService.class);
+        GoogleAIService service = retrofit.create(GoogleAIService.class);
 
         String q = System.getenv("gemma_key");
 
-        GoogleEmbedding.ModelPart part = new GoogleEmbedding.ModelPart("how are you");
-        GoogleEmbedding.ModelContent content = new GoogleEmbedding.ModelContent(Collections.singletonList(part));
+        ModelPart part = new ModelPart("how are you");
+        ModelContent content = new ModelContent(Collections.singletonList(part));
         GoogleEmbedding embedding = new GoogleEmbedding("models/embedding-001", content);
 
-        GoogleEmbeddingReply er1 = googleAiService.embedding(q, embedding).execute().body();
+        GoogleEmbeddingReply er1 = service.embedding(q, embedding).execute().body();
 
         System.out.println(Arrays.toString(er1.embedding.values));
     }
